@@ -4,10 +4,10 @@ import datetime
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, MetaData, Table
 from sqlalchemy.engine.url import URL
 import sqlalchemy
-from suspect_scrape_app import settings
+from s3suspects import settings
 from sqlalchemy.orm import mapper, sessionmaker
-from suspect_scrape_app.items import TrackItem
-from helpers import load_tables, remove_html_markup, clean_string, score_name, find_city, list2string, zone1, zone2, zone3a
+from s3suspects.items import S3SuspectsItem
+from helpers import load_tables, remove_html_markup, clean_string, score_name, list2string, zone1, zone2, zone3a
 
 
 
@@ -54,7 +54,7 @@ class QuotesSpider(scrapy.Spider):
                     print('slp class detected. Running Zone3a Analysis...')
                     city, role, firm = zone3a(txt)
                     print('results from zone3a analysis: ')
-                    item = TrackItem()
+                    item = S3SuspectsItem()
                     item['name'] = name
                     item['link'] = clink
                     item['ident'] = response.meta['lid']
@@ -83,7 +83,7 @@ class QuotesSpider(scrapy.Spider):
                     cleaned_str = clean_string(salvage_string, name)
                     cleaned_str = cleaned_str.strip()
                     print('st string filtered: ', cleaned_str)
-                    item = TrackItem()
+                    item = S3SuspectsItem()
                     item['name'] = name
                     item['link'] = clink
                     item['location'] = None

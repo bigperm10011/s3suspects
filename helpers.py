@@ -92,6 +92,13 @@ def clean_string(string, name):
     conn_stmt = 'connections to recommended job candidates'
     trash_list = [lang2_stmt, conn_stmt, view_stmt, view1_stmt, view2_stmt, lnkd_stmt, dif_stmt, help_stmt, dsc_stmt, join_stmt, find_stmt, complete_stmt, partial_stmt, generic_stmt, lang_stmt, slang_stmt]
 
+    for i in trash_list:
+        if i in string:
+            print('statement found in string: ', i)
+            string = string.replace(i, '')
+            print('Trash List Removed: ', i)
+        print('******Clean String Closing*******')
+        return string
 
 
 
