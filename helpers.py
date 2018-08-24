@@ -90,6 +90,9 @@ def clean_string(string, name):
     dsc_stmt = 'discover inside'
     help_stmt = 'helping professionals like ' + name
     conn_stmt = 'connections to recommended job candidates'
+    full_stmt = 'full profile'
+    profile_stmt = 'on their profile'
+
     trash_list = [lang2_stmt, conn_stmt, view_stmt, view1_stmt, view2_stmt, lnkd_stmt, dif_stmt, help_stmt, dsc_stmt, join_stmt, find_stmt, complete_stmt, partial_stmt, generic_stmt, lang_stmt, slang_stmt]
 
     for i in trash_list:

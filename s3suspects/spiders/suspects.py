@@ -26,12 +26,20 @@ class QuotesSpider(scrapy.Spider):
             for l in lvr:
                 print('Leaver Selected: ', l.name)
                 lid = l.id
-                string = str('https://www.google.com/search?q=' + l.name + ' ' + 'site:www.linkedin.com/in/' + ' ' + 'language:en')
-                url = string
-                #l.timestamp = datetime.datetime.now(datetime.timezone.utc).isoformat()
-                sesh.commit()
+                try:
+                    old_firm_full = l.prosfirm
+                    old_firm_list = old_firm_full.split()
+                    oldfirm = old_firm_list[0]
+                    string = str('https://www.google.com/search?q=' + l.name + ' ' + oldfirm + ' ' + 'site:www.linkedin.com/in/')
+                    url = string
 
-                yield scrapy.Request(url=url, callback=self.parse, meta={'lid': l.id, 'name': l.name})
+                    yield scrapy.Request(url=url, callback=self.parse, meta={'lid': l.id, 'name': l.name})
+
+                except:
+                    string = str('https://www.google.com/search?q=' + l.name + ' ' + 'site:www.linkedin.com/in/')
+                    url = string
+
+                    yield scrapy.Request(url=url, callback=self.parse, meta={'lid': l.id, 'name': l.name})
         else:
             raise CloseSpider('All Leavers Have Suspects')
     def parse(self, response):
