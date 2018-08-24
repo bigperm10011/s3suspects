@@ -97,8 +97,8 @@ def clean_string(string, name):
             print('statement found in string: ', i)
             string = string.replace(i, '')
             print('Trash List Removed: ', i)
-        print('******Clean String Closing*******')
-        return string
+    print('******Clean String Closing*******')
+    return string
 
 
 
