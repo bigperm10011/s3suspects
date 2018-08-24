@@ -51,6 +51,20 @@ def remove_html_markup(s):
 
     return out
 
+def find_city(text):
+    print('**Find City Started**')
+    print('text delivered to find_city: ', text)
+    places = GeoText(text)
+    print('places result: ', places)
+    city = places.cities
+    print('**City Found: ', city)
+    print('**Closing find_city**')
+    try:
+        return city
+    except:
+        return None
+
+        
 def list2string(strung):
     print('****** list2string started*****')
     help_list = []
@@ -203,6 +217,94 @@ def zone3a(slp):
     print('Replaced \\xa0: ', slp)
     slp_lst = slp.split('-')
     print('Split Content into List: ', slp_lst)
+    if len(slp_lst) == 2:
+        print('slp_list is 2')
+        cty = slp_lst[0].strip()
+        print('possible city found. checking: ', cty)
+        cty_result = find_city(cty)
+        print('length of city_find result: ', len(cty_result))
+        if len(cty_result) == 0:
+            city = cty.strip()
+            role = None
+            firm = slp_lst[1].strip()
+            print('city/firm found')
+            print(city)
+            print(firm)
+            print('*** Zone3a Analysis Complete ***')
+            return city, role, firm
+        else:
+            print('city verified: ', cty_result)
+            city = cty_result[0]
+            role = None
+            firm = slp_lst[1].strip()
+            print('city/firm found')
+            print(city)
+            print(firm)
+            print('*** Zone3a Analysis Complete ***')
+            return city, role, firm
+    elif len(slp_lst) == 3:
+        print('slp_list is 3')
+        cty = slp_lst[0].strip()
+        print('possible city found. checking: ', cty)
+        cty_result = find_city(cty)
+        if len(cty_result) == 0:
+            city = cty.strip()
+            role = slp_lst[1].strip()
+            firm = slp_lst[2].strip()
+            print('city/role/firm found')
+            print(city)
+            print(role)
+            print(firm)
+            print('*** Zone3a Analysis Complete ***')
+            return city, role, firm
+        else:
+            print('city verified: ', cty_result)
+            city = cty_result[0]
+            role = slp_lst[1].strip()
+            firm = slp_lst[2].strip()
+            print('city/role/firm found')
+            print(city)
+            print(role)
+            print(firm)
+            print('*** Zone3a Analysis Complete ***')
+            return city, role, firm
+
+    elif len(slp_lst) == 4:
+        print('slp_list is 4')
+        cty = slp_lst[0].strip()
+        print('possible city found. checking: ', cty)
+        cty_result = find_city(cty)
+        if len(cty_result) == 0:
+            print('Warning: City Not Found: ', cty_result)
+            city = cty.strip()
+            role = slp_lst[1].strip() + ' ' + slp_lst[2].strip()
+            firm = slp_lst[3].strip()
+            print('city/role/firm found')
+            print(city)
+            print(role)
+            print(firm)
+            print('*** Zone3a Analysis Complete ***')
+            return city, role, firm
+        else:
+            print('city verified: ', cty_result)
+            city = cty_result[0]
+            role = slp_lst[1].strip() + ' ' + slp_lst[2].strip()
+            firm = slp_lst[3].strip()
+            print('city/role/firm found')
+            print(city)
+            print(role)
+            print(firm)
+            print('*** Zone3a Analysis Complete ***')
+            return city, role, firm
+
+    else:
+        print('slp_list is None')
+        print('No Usable Information Found')
+        print('*** Zone3a Analysis Complete ***')
+        city = None
+        role = None
+        firm = None
+        return city, role, firm
 
 def score_name(rez_name, db_name):
     print('***Starting Score_Name***')

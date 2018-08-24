@@ -7,7 +7,7 @@ import sqlalchemy
 from s3suspects import settings
 from sqlalchemy.orm import mapper, sessionmaker
 from s3suspects.items import S3SuspectsItem
-from helpers import load_tables, remove_html_markup, clean_string, score_name, list2string, zone1, zone2, zone3a
+from helpers import load_tables, remove_html_markup, clean_string, score_name, find_city, list2string, zone1, zone2, zone3a
 
 
 
