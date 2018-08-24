@@ -18,7 +18,7 @@ class QuotesSpider(scrapy.Spider):
     slinks = sesh.query(Suspect).all()
     link_list = []
     for s in slinks:
-        link_list.append(s.link)
+        link_list.append(s.slink)
 
     def start_requests(self, sesh=sesh, Leaver=Leaver, lvr=lvr):
         print('number of names to be scraped:', len(lvr))
