@@ -18,7 +18,7 @@ class SuspectPipeline(object):
             #getting sqlalchemy session from spider
             sesh = spider.sesh
             if item['link'] in spider.link_list:
-                #ID duplicate
+                print('Duplicate Suspect. Skipping...')
                 pass
             else:
                 print('New Suspect Found')

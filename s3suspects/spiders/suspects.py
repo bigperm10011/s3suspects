@@ -32,6 +32,8 @@ class QuotesSpider(scrapy.Spider):
                     oldfirm = old_firm_list[0]
                     string = str('https://www.google.com/search?q=' + l.name + ' ' + oldfirm + ' ' + 'site:www.linkedin.com/in/')
                     url = string
+                    l.suspectcheck = datetime.datetime.now(datetime.timezone.utc).isoformat()
+                    sesh.commit()
 
                     yield scrapy.Request(url=url, callback=self.parse, meta={'lid': l.id, 'name': l.name})
 
