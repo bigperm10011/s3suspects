@@ -14,7 +14,7 @@ from helpers import load_tables, remove_html_markup, clean_string, score_name, f
 class QuotesSpider(scrapy.Spider):
     name = "suspects"
     sesh, Suspect, Leaver = load_tables()
-    lvr = sesh.query(Leaver).filter_by(result='Lost', inprosshell='Yes').order_by(Leaver.lasttracked).limit(5).all()
+    lvr = sesh.query(Leaver).filter_by(result='Lost', inprosshell='Yes').order_by(desc(Leaver.suspectcheck)).limit(5).all()
     slinks = sesh.query(Suspect).all()
     link_list = []
     for s in slinks:
