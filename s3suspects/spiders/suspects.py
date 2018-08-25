@@ -1,7 +1,7 @@
 import scrapy
 import re
 import datetime
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, MetaData, Table
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, MetaData, Table, desc
 from sqlalchemy.engine.url import URL
 import sqlalchemy
 from s3suspects import settings
