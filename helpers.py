@@ -64,7 +64,7 @@ def find_city(text):
     except:
         return None
 
-        
+
 def list2string(strung):
     print('****** list2string started*****')
     help_list = []
@@ -87,6 +87,7 @@ def clean_string(string, name):
     print('******Clean String Started*******')
     first = name.split(' ')[0].lower()
     name = name.lower()
+    name_w_s = name + 's'
     print('state of string before filtering: ', string)
     view_stmt = 'view ' + name + 's full profile'
     view1_stmt = 'view ' + name + 's profile'
@@ -95,25 +96,30 @@ def clean_string(string, name):
     dif_stmt = 'find a different ' + name
     join_stmt = 'join linkedin to see ' + first + 's skills endorsements and full profile'
     find_stmt = 'find a different ' + name
-    complete_stmt = 'see the complete profile on linkedin and discover ' + first +  's connections and jobs at similar companies'
+    complete_stmt = 'see the complete profile on linkedin and'
+    dsc2_stmt = 'discover ' + first +  's connections and jobs at similar companies'
+    dsc3_stmt = 'discover ' + first +  's connections and jobs at similar'
     partial_stmt = 'see the complete profile on'
     lang_stmt = 'view this profile in another language'
     lang2_stmt = 'view this profile in another  language'
     slang_stmt = 'languages'
     lnkd_stmt = 'linkedin is the worlds largest business network'
+    lnkd2_stmt = 'linkedin and'
+    lnkd3_stmt = 'linkedin'
     dsc_stmt = 'discover inside'
     help_stmt = 'helping professionals like ' + name
     conn_stmt = 'connections to recommended job candidates'
-    full_stmt = 'full profile'
-    profile_stmt = 'on their profile'
-
-    trash_list = [lang2_stmt, conn_stmt, view_stmt, view1_stmt, view2_stmt, lnkd_stmt, dif_stmt, help_stmt, dsc_stmt, join_stmt, find_stmt, complete_stmt, partial_stmt, generic_stmt, lang_stmt, slang_stmt]
+    activity_stmt = name + 's activity'
+    world_stmt = 'the worlds largest professional'
+    name_string = name
+    on_stmt = 'on their profile'
+    trash_list = [world_stmt, activity_stmt, dsc3_stmt, dsc2_stmt, lang2_stmt, conn_stmt, view_stmt, view1_stmt, view2_stmt, lnkd_stmt, dif_stmt, help_stmt, dsc_stmt, join_stmt, find_stmt, complete_stmt, partial_stmt, generic_stmt, lang_stmt, slang_stmt, name_w_s, name_string, lnkd3_stmt, lnkd2_stmt, on_stmt]
 
     for i in trash_list:
         if i in string:
-            print('statement found in string: ', i)
             string = string.replace(i, '')
-            print('Trash List Removed: ', i)
+            print('Found and Removed: ', i)
+    print('Salvaged Text FINAL: ', string)
     print('******Clean String Closing*******')
     return string
 
@@ -223,18 +229,9 @@ def zone3a(slp):
         print('possible city found. checking: ', cty)
         cty_result = find_city(cty)
         print('length of city_find result: ', len(cty_result))
-        if len(cty_result) == 0:
-            city = cty.strip()
-            role = None
-            firm = slp_lst[1].strip()
-            print('city/firm found')
-            print(city)
-            print(firm)
-            print('*** Zone3a Analysis Complete ***')
-            return city, role, firm
-        else:
+        if cty_result:
             print('city verified: ', cty_result)
-            city = cty_result[0]
+            city = cty_result
             role = None
             firm = slp_lst[1].strip()
             print('city/firm found')
@@ -242,13 +239,33 @@ def zone3a(slp):
             print(firm)
             print('*** Zone3a Analysis Complete ***')
             return city, role, firm
+
+        else:
+            print('city NOT verified (slp2): ', cty_result)
+            if len(cty) == 2:
+                city_string = cty[0] + ', ' + cty[1]
+                city = city_string
+            elif len(cty) == 1:
+                city_string = cty[0]
+                city = city_string
+            else:
+                city = str(cty)
+            role = None
+            firm = slp_lst[1].strip()
+            print('city/firm found')
+            print(city)
+            print(firm)
+            print('*** Zone3a Analysis Complete ***')
+            return city, role, firm
+
     elif len(slp_lst) == 3:
         print('slp_list is 3')
         cty = slp_lst[0].strip()
         print('possible city found. checking: ', cty)
         cty_result = find_city(cty)
-        if len(cty_result) == 0:
-            city = cty.strip()
+        if cty_result:
+            print('city verified: ', cty_result)
+            city = cty_result[0]
             role = slp_lst[1].strip()
             firm = slp_lst[2].strip()
             print('city/role/firm found')
@@ -257,9 +274,17 @@ def zone3a(slp):
             print(firm)
             print('*** Zone3a Analysis Complete ***')
             return city, role, firm
+
         else:
-            print('city verified: ', cty_result)
-            city = cty_result[0]
+            print('city NOT verified (slp3): ', cty_result)
+            if len(cty) == 2:
+                city_string = cty[0] + ', ' + cty[1]
+                city = city_string
+            elif len(cty) == 1:
+                city_string = cty[0]
+                city = city_string
+            else:
+                city = str(cty)
             role = slp_lst[1].strip()
             firm = slp_lst[2].strip()
             print('city/role/firm found')
@@ -274,9 +299,9 @@ def zone3a(slp):
         cty = slp_lst[0].strip()
         print('possible city found. checking: ', cty)
         cty_result = find_city(cty)
-        if len(cty_result) == 0:
-            print('Warning: City Not Found: ', cty_result)
-            city = cty.strip()
+        if cty_result:
+            print('city verified: ', cty_result)
+            city = cty_result[0]
             role = slp_lst[1].strip() + ' ' + slp_lst[2].strip()
             firm = slp_lst[3].strip()
             print('city/role/firm found')
@@ -286,8 +311,15 @@ def zone3a(slp):
             print('*** Zone3a Analysis Complete ***')
             return city, role, firm
         else:
-            print('city verified: ', cty_result)
-            city = cty_result[0]
+            print('city NOT verified (slp4): ', cty_result)
+            if len(cty) == 2:
+                city_string = cty[0] + ', ' + cty[1]
+                city = city_string
+            elif len(cty) == 1:
+                city_string = cty[0]
+                city = city_string
+            else:
+                city = str(cty)
             role = slp_lst[1].strip() + ' ' + slp_lst[2].strip()
             firm = slp_lst[3].strip()
             print('city/role/firm found')

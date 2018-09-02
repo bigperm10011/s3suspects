@@ -14,41 +14,42 @@ import datetime
 
 class SuspectPipeline(object):
     def process_item(self, item, spider):
-        if item['status'] == 'Success':
-            #getting sqlalchemy session from spider
-            sesh = spider.sesh
-            if item['link'] in spider.link_list:
-                print('Duplicate Suspect. Skipping...')
-                pass
-            else:
-                print('New Suspect Found')
-                suspect = spider.Suspect()
-                suspect.name=item['name']
-                suspect.leaverid=item['ident']
-                ts_format = datetime.datetime.now(datetime.timezone.utc).isoformat()
-                suspect.datetimeadded = ts_format
-                try:
-                    suspect.srole=item['role']
-                except:
-                    suspect.srole = None
-                try:
-                    suspect.sfirm=item['firm']
-                except:
-                    suspect.sfirm= None
-                try:
-                    suspect.slocation=item['location']
-                except:
-                    suspect.slocation= None
-                suspect.slink=item['link']
-                try:
-                    print('Updating DB...')
-                    sesh.add(suspect)
-                    sesh.commit()
-                except IntegrityError:
-                    print('DB Integrity Error....', item['name'])
-            return item
-        else:
+        print('***** Pipeline Processing Started ******')
+        #getting sqlalchemy session from spider
+        sesh = spider.sesh
+        if item['link'] in spider.link_list:
+            print('Duplicate Suspect. Skipping...')
+            print('***** Pipeline Processing Complete ******')
             return None
+        else:
+            print('New Suspect Found')
+            suspect = spider.Suspect()
+            suspect.name=item['name']
+            suspect.leaverid=item['ident']
+            ts_format = datetime.datetime.now(datetime.timezone.utc).isoformat()
+            suspect.datetimeadded = ts_format
+            try:
+                suspect.srole=item['role']
+            except:
+                suspect.srole = None
+            try:
+                suspect.sfirm=item['firm']
+            except:
+                suspect.sfirm= None
+            try:
+                suspect.slocation=item['location']
+            except:
+                suspect.slocation= None
+            suspect.slink=item['link']
+            try:
+                print('Updating DB...')
+                sesh.add(suspect)
+                sesh.commit()
+            except IntegrityError:
+                print('DB Integrity Error....', item['name'])
+        print('***** Pipeline Processing Complete ******')
+        return item
+
     def close_spider(self, spider):
         sesh = spider.sesh
         susps = sesh.query(spider.Suspect).filter_by(result=None).all()
