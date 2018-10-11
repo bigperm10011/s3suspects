@@ -14,11 +14,17 @@ from helpers import load_tables, remove_html_markup, clean_string, score_name, f
 class QuotesSpider(scrapy.Spider):
     name = "suspects"
     sesh, Suspect, Leaver = load_tables()
-    lvr = sesh.query(Leaver).filter_by(result='Lost', inprosshell='Yes').order_by(desc(Leaver.suspectcheck)).limit(5).all()
+    in_lvr = sesh.query(Leaver).filter_by(result='Lost', inprosshell='Yes').order_by(Leaver.suspectcheck).limit(5).all()
+    out_lvr = sesh.query(Leaver).filter_by(result='Lost').order_by(Leaver.suspectcheck).limit(5).all()
     slinks = sesh.query(Suspect).all()
     link_list = []
     for s in slinks:
         link_list.append(s.slink)
+
+    if len(in_lvr) > 0:
+        lvr = in_lvr
+    else:
+        lvr = out_lvr
 
     def start_requests(self, sesh=sesh, Leaver=Leaver, lvr=lvr):
         print('number of names to be scraped:', len(lvr))
